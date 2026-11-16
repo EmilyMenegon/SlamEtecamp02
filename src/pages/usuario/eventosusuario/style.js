@@ -1,0 +1,1737 @@
+
+import styled, { css, keyframes } from "styled-components";
+ 
+const COLORS = {
+  primary: "#831614",
+  primaryDark: "#65100f",
+  yellow: "#ffdb53",
+  yellowDark: "#e3b900",
+  background: "#fff",
+  white: "#ffffff",
+  text: "#1c1c1c",
+  muted: "#777777",
+  border: "#d8d8d8",
+  danger: "#d62828",
+  dangerDark: "#b71c1c",
+};
+ 
+/* =====================================================
+   BUTTON EFFECT
+===================================================== */
+ 
+const ButtonEffect = css`
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+ 
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+ 
+  &::before {
+    content: "";
+ 
+    position: absolute;
+ 
+    left: var(--mouse-x);
+    top: var(--mouse-y);
+ 
+    width: 20px;
+    height: 20px;
+ 
+    border-radius: 50%;
+ 
+    background: ${COLORS.yellow};
+ 
+    transform: translate(-50%, -50%) scale(0);
+ 
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+ 
+    z-index: -1;
+ 
+    pointer-events: none;
+  }
+ 
+  &:hover::before {
+    transform: translate(-50%, -50%) scale(15);
+  }
+`;
+ 
+/* =====================================================
+   PAGE
+===================================================== */
+ 
+export const Page = styled.div`
+  min-height: 100vh;
+  width: 100%;
+ 
+  background: var(--page-bg);
+  color: var(--text-neutral-900);
+ 
+  font-family: "Poppins", sans-serif;
+ 
+  box-sizing: border-box;
+ 
+  overflow-x: hidden;
+`;
+ 
+/* =====================================================
+   CONTENT
+===================================================== */
+ 
+export const Content = styled.main`
+  width: min(97%, 1650px);
+ 
+  margin: 35px auto 55px;
+ 
+  box-sizing: border-box;
+ 
+  @media (max-width: 1100px) {
+    width: 96%;
+    margin-top: 30px;
+  }
+ 
+  @media (max-width: 700px) {
+    width: 94%;
+    margin: 22px auto 40px;
+  }
+`;
+ 
+/* =====================================================
+   HEADER
+===================================================== */
+ 
+export const Header = styled.header`
+  position: relative;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  gap: 30px;
+ 
+  margin-bottom: 28px;
+ 
+  @media (max-width: 850px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+ 
+    gap: 18px;
+  }
+`;
+ 
+export const TitleArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ 
+  gap: 8px;
+ 
+  text-align: center;
+`;
+ 
+export const Title = styled.h1`
+  margin: 0 0 10px;
+ 
+  color: var(--text-brand);
+ 
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+ 
+  font-weight: 900;
+ 
+  letter-spacing: -2px;
+ 
+  line-height: 1.05;
+ 
+  @media (max-width: 768px) {
+    font-size: clamp(2.5rem, 9vw, 4rem);
+    letter-spacing: -1.5px;
+  }
+ 
+  @media (max-width: 480px) {
+    font-size: 2.3rem;
+  }
+`;
+ 
+export const Subtitle = styled.p`
+  width: 100%;
+ 
+  max-width: 700px;
+ 
+  margin: 8px auto 0;
+ 
+  color: var(--text-muted);
+ 
+  font-size: 1.55rem;
+ 
+  line-height: 1.6;
+ 
+  text-align: center;
+ 
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+ 
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
+`;
+ 
+/* =====================================================
+   YEARS
+===================================================== */
+ 
+export const YearsWrapper = styled.div`
+  width: 100%;
+ 
+  margin: 0 auto;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  gap: 18px;
+ 
+  box-sizing: border-box;
+ 
+  @media (max-width: 900px) {
+    gap: 12px;
+  }
+ 
+  @media (max-width: 600px) {
+    gap: 7px;
+  }
+ 
+  @media (max-width: 430px) {
+    gap: 5px;
+  }
+`;
+ 
+export const YearsContainer = styled.div`
+  width: 100%;
+ 
+  max-width: 1000px;
+ 
+  display: grid;
+ 
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+ 
+  align-items: stretch;
+  justify-content: center;
+ 
+  gap: 18px;
+ 
+  @media (max-width: 900px) {
+    gap: 12px;
+  }
+ 
+  @media (max-width: 700px) {
+    gap: 9px;
+  }
+ 
+  @media (max-width: 520px) {
+    gap: 6px;
+  }
+`;
+ 
+export const YearArrow = styled.button`
+  position: relative;
+ 
+  width: 46px;
+  height: 46px;
+ 
+  flex-shrink: 0;
+ 
+  padding: 0;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  border: none;
+  border-radius: 12px;
+ 
+  background: ${COLORS.primary};
+  color: #fff;
+ 
+  cursor: pointer;
+ 
+  overflow: hidden;
+  isolation: isolate;
+ 
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    opacity 0.2s ease;
+ 
+  &::before {
+    content: "";
+ 
+    position: absolute;
+ 
+    left: var(--mouse-x, 50%);
+    top: var(--mouse-y, 50%);
+ 
+    width: 18px;
+    height: 18px;
+ 
+    border-radius: 50%;
+ 
+    background: ${COLORS.yellow};
+ 
+    transform: translate(-50%, -50%) scale(0);
+ 
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+ 
+    z-index: -1;
+ 
+    pointer-events: none;
+  }
+ 
+  svg {
+    position: relative;
+ 
+    z-index: 2;
+ 
+    width: 21px;
+    height: 21px;
+ 
+    stroke-width: 2.5;
+  }
+ 
+  &:hover:not(:disabled) {
+    color: #111;
+ 
+    transform: translateY(-2px);
+ 
+    box-shadow: 0 8px 18px rgba(131, 22, 20, 0.2);
+ 
+    &::before {
+      transform: translate(-50%, -50%) scale(8);
+    }
+  }
+ 
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+ 
+  &:disabled {
+    opacity: 0.25;
+ 
+    cursor: not-allowed;
+ 
+    box-shadow: none;
+  }
+ 
+  &:focus-visible {
+    outline: 2px solid ${COLORS.yellow};
+    outline-offset: 3px;
+  }
+ 
+  @media (max-width: 700px) {
+    width: 38px;
+    height: 38px;
+ 
+    border-radius: 10px;
+ 
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+ 
+  @media (max-width: 430px) {
+    width: 32px;
+    height: 32px;
+ 
+    border-radius: 8px;
+ 
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+`;
+ 
+export const YearCard = styled.button`
+  position: relative;
+ 
+  width: 100%;
+  min-width: 0;
+ 
+  height: 175px;
+ 
+  padding: 20px;
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ 
+  gap: 13px;
+ 
+  box-sizing: border-box;
+ 
+  border: 2px solid ${({ $active }) => ($active ? COLORS.primary : "var(--border-subtle)")};
+ 
+  border-radius: 22px;
+ 
+  background: ${({ $active }) => ($active ? COLORS.primary : "var(--surface)")};
+ 
+  color: ${({ $active }) => ($active ? "#fff" : "var(--text-primary)")};
+ 
+  font-family: inherit;
+ 
+  cursor: pointer;
+ 
+  overflow: hidden;
+  isolation: isolate;
+ 
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.3s ease;
+ 
+  &::before {
+    content: "";
+ 
+    position: absolute;
+ 
+    left: var(--mouse-x, 50%);
+    top: var(--mouse-y, 50%);
+ 
+    width: 35px;
+    height: 35px;
+ 
+    border-radius: 50%;
+ 
+    background: ${COLORS.yellow};
+ 
+    transform: translate(-50%, -50%) scale(0);
+ 
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+ 
+    z-index: -1;
+ 
+    pointer-events: none;
+  }
+ 
+  &:hover {
+    transform: translateY(-8px);
+ 
+    border-color: ${COLORS.primary};
+ 
+    box-shadow: 0 18px 35px rgba(131, 22, 20, 0.16);
+ 
+    &::before {
+      transform: translate(-50%, -50%) scale(11);
+    }
+  }
+ 
+  &:active {
+    transform: translateY(-3px) scale(0.98);
+  }
+ 
+  &:focus-visible {
+    outline: 3px solid ${COLORS.yellow};
+    outline-offset: 4px;
+  }
+ 
+  @media (max-width: 900px) {
+    height: 155px;
+    padding: 17px;
+    border-radius: 20px;
+  }
+ 
+  @media (max-width: 700px) {
+    height: 135px;
+    padding: 13px;
+    border-radius: 17px;
+ 
+    gap: 9px;
+  }
+ 
+  @media (max-width: 520px) {
+    height: 115px;
+    padding: 10px;
+    border-radius: 15px;
+ 
+    gap: 7px;
+  }
+ 
+  @media (max-width: 390px) {
+    height: 105px;
+    padding: 8px;
+    border-radius: 13px;
+  }
+`;
+ 
+export const YearIcon = styled.div`
+  width: 52px;
+  height: 52px;
+ 
+  flex-shrink: 0;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  border-radius: 50%;
+ 
+  background: ${({ $active }) =>
+    $active ? COLORS.yellow : "rgba(255,219,83,.22)"};
+ 
+  color: ${({ $active }) => ($active ? COLORS.primary : "var(--icon-on-tint)")};
+ 
+  font-size: 23px;
+ 
+  transition:
+    transform 0.3s ease,
+    background 0.25s ease;
+ 
+  ${YearCard}:hover & {
+    transform: scale(1.12) rotate(2deg);
+  }
+ 
+  @media (max-width: 900px) {
+    width: 46px;
+    height: 46px;
+ 
+    font-size: 21px;
+  }
+ 
+  @media (max-width: 700px) {
+    width: 40px;
+    height: 40px;
+ 
+    font-size: 18px;
+  }
+ 
+  @media (max-width: 520px) {
+    width: 34px;
+    height: 34px;
+ 
+    font-size: 15px;
+  }
+ 
+  @media (max-width: 390px) {
+    width: 30px;
+    height: 30px;
+ 
+    font-size: 13px;
+  }
+`;
+ 
+export const YearNumber = styled.strong`
+  position: relative;
+ 
+  z-index: 2;
+ 
+  color: ${({ $active }) => ($active ? "#fff" : "var(--text-brand)")};
+ 
+  font-size: 2.1rem;
+ 
+  font-weight: 850;
+ 
+  line-height: 1;
+ 
+  transition:
+    color 0.25s ease,
+    transform 0.3s ease;
+ 
+  ${YearCard}:hover & {
+    color: var(--text-primary);
+ 
+    transform: scale(1.05);
+  }
+ 
+  @media (max-width: 900px) {
+    font-size: 1.8rem;
+  }
+ 
+  @media (max-width: 700px) {
+    font-size: 1.55rem;
+  }
+ 
+  @media (max-width: 520px) {
+    font-size: 1.3rem;
+  }
+ 
+  @media (max-width: 390px) {
+    font-size: 1.15rem;
+  }
+`;
+ 
+export const YearDescription = styled.span`
+  position: relative;
+ 
+  z-index: 2;
+ 
+  color: ${({ $active }) => ($active ? "rgba(255,255,255,.72)" : "var(--text-neutral-400)")};
+ 
+  font-size: 10px;
+ 
+  font-weight: 500;
+ 
+  line-height: 1.2;
+ 
+  text-align: center;
+ 
+  white-space: nowrap;
+ 
+  transition: color 0.25s ease;
+ 
+  ${YearCard}:hover & {
+    color: var(--text-gold-800);
+  }
+ 
+  @media (max-width: 600px) {
+    font-size: 9px;
+ 
+    white-space: normal;
+  }
+ 
+  @media (max-width: 520px) {
+    font-size: 8px;
+  }
+`;
+ 
+/* =====================================================
+   BLOCOS DA PÁGINA
+   MESMA INTERFACE DA INSCRICOES
+===================================================== */
+ 
+export const Bloco = styled.section`
+  width: 100%;
+  margin-bottom: 28px;
+  padding: 28px 30px 32px;
+  box-sizing: border-box;
+ 
+  background: var(--surface);
+ 
+  border: 2px solid var(--border-neutral-200);
+  border-radius: 20px;
+ 
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.1),
+    0 3px 8px rgba(0, 0, 0, 0.045);
+ 
+  @media (max-width: 900px) {
+    padding: 24px 21px 28px;
+  }
+ 
+  @media (max-width: 600px) {
+    margin-bottom: 20px;
+    padding: 19px 14px 22px;
+    border-radius: 16px;
+  }
+`;
+ 
+// Bloco usado dentro do modal (sombra mais leve, menos espaçamento)
+export const BlocoInterno = styled(Bloco)`
+  margin-bottom: 20px;
+  padding: 22px 24px 26px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+ 
+  &:last-child {
+    margin-bottom: 0;
+  }
+ 
+  @media (max-width: 600px) {
+    padding: 16px 13px 18px;
+  }
+`;
+ 
+export const BlocoHeader = styled.div`
+  margin-bottom: 25px;
+  padding-bottom: 19px;
+ 
+  display: flex;
+  align-items: center;
+  gap: 15px;
+ 
+  border-bottom: 2px solid var(--border);
+ 
+  @media (max-width: 600px) {
+    margin-bottom: 19px;
+    padding-bottom: 14px;
+    gap: 11px;
+  }
+`;
+ 
+export const BlocoIcone = styled.div`
+  width: 46px;
+  height: 46px;
+ 
+  flex-shrink: 0;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  border-radius: 12px;
+ 
+  background: var(--surface-highlight);
+ 
+  border: 1px solid var(--border-gold-350);
+ 
+  color: var(--text-brand);
+ 
+  font-size: 21px;
+ 
+  @media (max-width: 600px) {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+`;
+ 
+export const BlocoInfo = styled.div`
+  min-width: 0;
+ 
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+ 
+export const BlocoTitulo = styled.h2`
+  margin: 0;
+ 
+  color: var(--text-neutral-850-2);
+ 
+  font-size: 24px;
+  font-weight: 750;
+ 
+  @media (max-width: 600px) {
+    font-size: 19px;
+  }
+`;
+ 
+export const BlocoDescricao = styled.p`
+  margin: 0;
+ 
+  color: var(--text-muted);
+ 
+  font-size: 16px;
+  line-height: 1.45;
+ 
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
+`;
+ 
+export const BlocoContador = styled.span`
+  margin-left: auto;
+  flex-shrink: 0;
+  min-height: 34px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--surface-highlight);
+  border: 1px solid var(--border-gold-350);
+  color: var(--text-gold-750);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+ 
+  @media (max-width: 600px) {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+`;
+ 
+export const ErrorText = styled.div`
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 20px;
+  padding: 15px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: var(--surface-rose-50);
+  border: 1px solid #e7bcbc;
+  border-radius: 10px;
+  color: var(--text-danger-500);
+  font-size: 15px;
+  text-align: center;
+`;
+ 
+/* =====================================================
+   EVENT BLOCK
+===================================================== */
+ 
+export const Cards = styled.section`
+  width: 100%;
+ 
+  display: grid;
+ 
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+ 
+  gap: 34px;
+ 
+  box-sizing: border-box;
+ 
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+ 
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+ 
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+`;
+ 
+/* =====================================================
+   EVENT CARD
+===================================================== */
+ 
+export const EventCard = styled.article`
+  position: relative;
+ 
+  width: 100%;
+  min-height: 500px;
+ 
+  background: var(--surface);
+ 
+  border: 1px solid var(--border-neutral-150);
+ 
+  border-radius: 20px;
+ 
+  overflow: hidden;
+ 
+  cursor: pointer;
+ 
+  display: flex;
+  flex-direction: column;
+ 
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.09),
+    0 3px 8px rgba(0, 0, 0, 0.04);
+ 
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    border-color 0.25s ease;
+ 
+  &:hover {
+    transform: translateY(-8px);
+ 
+    border-color: var(--border-neutral-200-2);
+ 
+    box-shadow:
+      0 22px 45px rgba(0, 0, 0, 0.14),
+      0 5px 12px rgba(0, 0, 0, 0.05);
+  }
+ 
+  &:focus-visible {
+    outline: 3px solid ${COLORS.yellow};
+    outline-offset: 4px;
+  }
+ 
+  @media (max-width: 800px) {
+    min-height: 480px;
+  }
+ 
+  @media (max-width: 600px) {
+    min-height: 0;
+    border-radius: 17px;
+  }
+`;
+ 
+export const EventImage = styled.div`
+  width: 100%;
+ 
+  height: 220px;
+ 
+  flex-shrink: 0;
+ 
+  overflow: hidden;
+ 
+  background: var(--surface-neutral-50);
+ 
+  img {
+    width: 100%;
+    height: 100%;
+ 
+    display: block;
+ 
+    object-fit: cover;
+ 
+    transition: transform 0.5s ease;
+  }
+ 
+  ${EventCard}:hover & img {
+    transform: scale(1.06);
+  }
+ 
+  @media (max-width: 800px) {
+    height: 200px;
+  }
+ 
+  @media (max-width: 600px) {
+    height: 180px;
+  }
+`;
+ 
+export const EventImagePlaceholder = styled.div`
+  width: 100%;
+ 
+  height: 220px;
+  margin-bottom: ${({ $grande }) => ($grande ? "22px" : "0")};
+ 
+  flex-shrink: 0;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  border-radius: ${({ $grande }) => ($grande ? "14px" : "0")};
+ 
+  background: var(--surface-neutral-50-2);
+ 
+  color: var(--text-neutral-350-2);
+ 
+  font-size: 46px;
+ 
+  @media (max-width: 800px) {
+    height: 200px;
+  }
+ 
+  @media (max-width: 600px) {
+    height: 180px;
+  }
+`;
+ 
+export const EventContent = styled.div`
+  padding: 25px;
+ 
+  display: flex;
+  flex-direction: column;
+ 
+  flex: 1;
+ 
+  box-sizing: border-box;
+ 
+  @media (max-width: 600px) {
+    padding: 20px;
+  }
+`;
+ 
+export const EventTitle = styled.h2`
+  margin: 0 0 10px;
+ 
+  color: var(--text-neutral-850-2);
+ 
+  font-size: 24px;
+ 
+  font-weight: 750;
+ 
+  line-height: 1.3;
+ 
+  word-break: break-word;
+ 
+  @media (max-width: 600px) {
+    font-size: 21px;
+  }
+`;
+ 
+export const EventDescription = styled.p`
+  margin: 0 0 18px;
+ 
+  color: var(--text-muted);
+ 
+  font-size: 15px;
+ 
+  line-height: 1.6;
+ 
+  display: -webkit-box;
+ 
+  -webkit-line-clamp: 3;
+ 
+  -webkit-box-orient: vertical;
+ 
+  overflow: hidden;
+ 
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+`;
+ 
+export const InfoList = styled.div`
+  display: flex;
+ 
+  flex-direction: column;
+ 
+  gap: 12px;
+`;
+ 
+export const InfoItem = styled.div`
+  display: flex;
+ 
+  align-items: center;
+ 
+  gap: 10px;
+ 
+  color: var(--text-neutral-650);
+ 
+  font-size: 14px;
+ 
+  svg {
+    flex-shrink: 0;
+ 
+    color: var(--text-brand);
+ 
+    font-size: 17px;
+  }
+ 
+  span {
+    min-width: 0;
+ 
+    overflow: hidden;
+ 
+    text-overflow: ellipsis;
+ 
+    white-space: nowrap;
+  }
+`;
+ 
+/* =====================================================
+   EVENT FOOTER
+===================================================== */
+ 
+export const EventFooter = styled.div`
+  margin-top: auto;
+ 
+  padding-top: 20px;
+ 
+  display: flex;
+  align-items: center;
+ 
+  gap: 10px;
+`;
+ 
+export const AccessButton = styled.button`
+  ${ButtonEffect}
+ 
+  flex: 1;
+ 
+  min-height: 47px;
+ 
+  border: 2px solid ${COLORS.primary};
+ 
+  border-radius: 9px;
+ 
+  background: ${COLORS.primary};
+ 
+  color: #fff;
+ 
+  font-family: inherit;
+ 
+  font-size: 14px;
+ 
+  font-weight: 700;
+ 
+  cursor: pointer;
+ 
+  transition:
+    color 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+ 
+  &::before {
+    background: ${COLORS.yellow};
+  }
+ 
+  .buttonContent {
+    position: relative;
+ 
+    z-index: 2;
+ 
+    width: 100%;
+    height: 100%;
+ 
+    display: flex;
+ 
+    align-items: center;
+    justify-content: center;
+ 
+    gap: 8px;
+  }
+ 
+  &:hover {
+    color: #111;
+ 
+    transform: translateY(-2px);
+ 
+    box-shadow: 0 8px 18px rgba(131, 22, 20, 0.2);
+  }
+ 
+  &:hover svg {
+    transform: translateX(5px);
+  }
+ 
+  svg {
+    transition: 0.3s ease;
+  }
+ 
+  &:active {
+    transform: scale(0.97);
+  }
+ 
+  &:focus-visible {
+    outline: 2px solid ${COLORS.yellow};
+ 
+    outline-offset: 3px;
+  }
+`;
+ 
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+ 
+export const EmptyState = styled.div`
+  grid-column: 1 / -1;
+ 
+  min-height: 250px;
+ 
+  display: flex;
+  flex-direction: column;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  padding: 35px 20px;
+ 
+  box-sizing: border-box;
+ 
+  text-align: center;
+`;
+ 
+export const EmptyIcon = styled.div`
+  width: 62px;
+  height: 62px;
+ 
+  margin-bottom: 16px;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  border-radius: 50%;
+ 
+  background: var(--surface-highlight);
+ 
+  border: 1px solid var(--border-gold-350);
+ 
+  color: var(--text-gold-700);
+ 
+  font-size: 27px;
+`;
+ 
+export const EmptyTitle = styled.h2`
+  margin: 0 0 6px;
+ 
+  color: var(--text-secondary);
+ 
+  font-size: 20px;
+ 
+  font-weight: 750;
+`;
+ 
+export const EmptyText = styled.p`
+  max-width: 400px;
+ 
+  margin: 0;
+ 
+  color: var(--text-muted);
+ 
+  font-size: 15px;
+ 
+  line-height: 1.6;
+`;
+ 
+/* =====================================================
+   MODAL
+===================================================== */
+ 
+export const ModalOverlay = styled.div`
+  position: fixed;
+ 
+  inset: 0;
+ 
+  z-index: 9999;
+ 
+  padding: 20px;
+ 
+  display: flex;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  box-sizing: border-box;
+ 
+  background: rgba(20, 15, 15, 0.58);
+ 
+  backdrop-filter: blur(7px);
+ 
+  overflow-y: auto;
+`;
+ 
+const modalAppear = keyframes`
+  from {
+    opacity: 0;
+ 
+    transform:
+      translateY(16px)
+      scale(.97);
+  }
+ 
+  to {
+    opacity: 1;
+ 
+    transform:
+      translateY(0)
+      scale(1);
+  }
+`;
+ 
+export const Modal = styled.div`
+  width: 100%;
+ 
+  max-width: 1100px;
+ 
+  max-height: calc(100vh - 40px);
+ 
+  overflow-y: auto;
+ 
+  box-sizing: border-box;
+ 
+  padding: 28px;
+ 
+  background: var(--surface);
+ 
+  border: 2px solid var(--border-neutral-150-2);
+ 
+  border-radius: 20px;
+ 
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+ 
+  animation: ${modalAppear} 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+ 
+  @media (max-width: 600px) {
+    padding: 20px 16px;
+ 
+    border-radius: 17px;
+ 
+    max-height: calc(100vh - 20px);
+  }
+`;
+ 
+export const ModalHeader = styled.div`
+  display: flex;
+ 
+  align-items: flex-start;
+  justify-content: space-between;
+ 
+  gap: 15px;
+ 
+  margin-bottom: 22px;
+ 
+  padding-bottom: 19px;
+ 
+  border-bottom: 2px solid var(--border);
+`;
+ 
+export const ModalTitle = styled.h2`
+  margin: 0;
+ 
+  color: var(--text-brand);
+ 
+  font-size: 25px;
+ 
+  font-weight: 750;
+ 
+  line-height: 1.2;
+ 
+  @media (max-width: 600px) {
+    font-size: 20px;
+  }
+`;
+ 
+export const CloseButton = styled.button`
+  ${ButtonEffect}
+ 
+  width: 34px;
+  height: 34px;
+ 
+  flex-shrink: 0;
+ 
+  display: flex;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  padding: 0;
+ 
+  border: none;
+ 
+  border-radius: 50%;
+ 
+  background: transparent;
+ 
+  color: var(--text-neutral-450);
+ 
+  cursor: pointer;
+ 
+  &::before {
+    background: var(--surface-neutral-50);
+ 
+    width: 10px;
+    height: 10px;
+  }
+ 
+  svg {
+    position: relative;
+ 
+    z-index: 2;
+ 
+    width: 19px;
+    height: 19px;
+ 
+    transition: 0.35s ease;
+  }
+ 
+  &:hover {
+    color: var(--text-neutral-850);
+ 
+    transform: translateY(-2px);
+ 
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+ 
+    &::before {
+      transform: translate(-50%, -50%) scale(5);
+    }
+  }
+ 
+  &:hover svg {
+    transform: rotate(90deg);
+  }
+ 
+  &:focus-visible {
+    outline: 2px solid ${COLORS.yellow};
+ 
+    outline-offset: 2px;
+  }
+`;
+ 
+export const ModalImage = styled.div`
+  width: 100%;
+  height: 280px;
+  margin-bottom: 22px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface-neutral-50);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+ 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+ 
+  @media (max-width: 500px) {
+    height: 210px;
+  }
+`;
+ 
+export const ModalEventTitle = styled.h3`
+  margin: 0 0 12px;
+  color: var(--text-neutral-850-2);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.2;
+  font-weight: 800;
+  word-break: break-word;
+`;
+ 
+export const ModalDescription = styled.p`
+  margin: 0 0 20px;
+  color: var(--text-neutral-600);
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+`;
+ 
+export const ModalInfoList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+ 
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+`;
+ 
+export const ModalInfoItem = styled.div`
+  min-width: 0;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 12px;
+  background: var(--surface-neutral-50-3);
+  border: 1px solid var(--border-neutral-150);
+ 
+  & > svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--text-brand);
+  }
+ 
+  div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+ 
+  strong {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 650;
+  }
+ 
+  span {
+    color: var(--text-neutral-600);
+    font-size: 14px;
+    word-break: break-word;
+  }
+`;
+ 
+/* =====================================================
+   RANKING
+===================================================== */
+ 
+export const RankingTableWrapper = styled.div`
+  width: 100%;
+ 
+  overflow-x: auto;
+ 
+  border: 1px solid var(--border-neutral-150);
+ 
+  border-radius: 13px;
+ 
+  scrollbar-width: thin;
+ 
+  scrollbar-color: var(--text-gold-350) #e2e2e2;
+ 
+  &::-webkit-scrollbar {
+    height: 9px;
+  }
+ 
+  &::-webkit-scrollbar-track {
+    background: var(--page-neutral-100);
+  }
+ 
+  &::-webkit-scrollbar-thumb {
+    background: #ffdb53;
+ 
+    border-radius: 20px;
+  }
+`;
+ 
+export const RankingTable = styled.table`
+  width: 100%;
+ 
+  min-width: 1150px;
+ 
+  border-collapse: collapse;
+ 
+  font-family: inherit;
+ 
+  thead {
+    background: ${COLORS.yellow};
+  }
+ 
+  th {
+    height: 60px;
+ 
+    padding: 0 20px;
+ 
+    color: var(--text-primary);
+ 
+    font-size: 12px;
+ 
+    font-weight: 750;
+ 
+    text-align: center;
+ 
+    text-transform: uppercase;
+ 
+    letter-spacing: 0.5px;
+ 
+    white-space: nowrap;
+  }
+ 
+  th:nth-child(2),
+  td:nth-child(2) {
+    text-align: left;
+ 
+    min-width: 190px;
+  }
+ 
+  td {
+    height: 72px;
+ 
+    padding: 10px 20px;
+ 
+    color: var(--text-neutral-750);
+ 
+    font-size: 13px;
+ 
+    text-align: center;
+ 
+    white-space: nowrap;
+ 
+    border-bottom: 1px solid var(--border);
+ 
+    vertical-align: middle;
+  }
+ 
+  tbody tr {
+    background: var(--surface);
+ 
+    transition: background 0.2s ease;
+  }
+ 
+  tbody tr:nth-child(even) {
+    background: var(--surface-neutral-50-3);
+  }
+ 
+  tbody tr:hover {
+    background: var(--surface-cream-50-3);
+  }
+ 
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+ 
+  @media (max-width: 900px) {
+    th {
+      height: 56px;
+ 
+      padding: 0 15px;
+ 
+      font-size: 11px;
+    }
+ 
+    td {
+      height: 65px;
+ 
+      padding: 9px 15px;
+ 
+      font-size: 12px;
+    }
+  }
+ 
+  @media (max-width: 600px) {
+    min-width: 1050px;
+ 
+    th {
+      height: 52px;
+ 
+      padding: 0 13px;
+ 
+      font-size: 10px;
+    }
+ 
+    td {
+      height: 60px;
+ 
+      padding: 8px 13px;
+ 
+      font-size: 11px;
+    }
+  }
+`;
+ 
+export const RankingRow = styled.tr`
+  background: ${({ $primeiro }) =>
+    $primeiro ? "rgba(255,219,83,.13)" : "var(--surface)"};
+ 
+  td {
+    ${({ $primeiro }) => $primeiro && "font-weight: 600;"}
+  }
+`;
+ 
+export const Position = styled.div`
+  min-width: 50px;
+ 
+  display: flex;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  gap: 4px;
+ 
+  color: var(--text-neutral-850);
+ 
+  font-weight: 700;
+ 
+  svg {
+    color: var(--text-gold-700);
+  }
+`;
+ 
+export const ParticipantName = styled.span`
+  display: block;
+ 
+  max-width: 210px;
+ 
+  overflow: hidden;
+ 
+  text-overflow: ellipsis;
+ 
+  white-space: nowrap;
+ 
+  color: var(--text-neutral-850);
+ 
+  font-size: 13px;
+ 
+  font-weight: 700;
+`;
+ 
+export const Score = styled.span`
+  display: inline-flex;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  min-width: 38px;
+ 
+  height: 30px;
+ 
+  padding: 0 6px;
+ 
+  border-radius: 7px;
+ 
+  background: var(--surface-neutral-50-5);
+ 
+  color: var(--text-secondary);
+ 
+  font-size: 11px;
+ 
+  font-weight: 650;
+`;
+ 
+export const Average = styled.span`
+  color: var(--text-neutral-850);
+ 
+  font-weight: 700;
+`;
+ 
+export const Penalty = styled.span`
+  color: ${({ $penalidade }) => ($penalidade ? "var(--text-danger-500)" : "var(--text-success-600)")};
+ 
+  font-weight: 700;
+`;
+ 
+export const Time = styled.span`
+  display: inline-flex;
+ 
+  align-items: center;
+ 
+  gap: 5px;
+ 
+  color: var(--text-neutral-650);
+ 
+  font-weight: 600;
+ 
+  svg {
+    color: var(--text-muted);
+  }
+`;
+ 
+export const FinalScore = styled.span`
+  display: inline-flex;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  min-width: 60px;
+ 
+  min-height: 32px;
+ 
+  padding: 0 9px;
+ 
+  border-radius: 7px;
+ 
+  background: ${COLORS.primary};
+ 
+  color: ${COLORS.yellow};
+ 
+  font-weight: 700;
+`;
+ 
+export const RankingEmpty = styled.div`
+  min-height: 180px;
+ 
+  padding: 30px;
+ 
+  box-sizing: border-box;
+ 
+  border: 1px dashed var(--border-neutral-200-2);
+ 
+  border-radius: 14px;
+ 
+  background: var(--surface-neutral-0);
+ 
+  display: flex;
+ 
+  flex-direction: column;
+ 
+  align-items: center;
+  justify-content: center;
+ 
+  text-align: center;
+ 
+  gap: 7px;
+ 
+  color: var(--text-neutral-400);
+ 
+  svg {
+    color: var(--text-gold-700);
+ 
+    font-size: 28px;
+  }
+ 
+  strong {
+    color: var(--text-neutral-750);
+ 
+    font-size: 14px;
+  }
+ 
+  span {
+    max-width: 400px;
+ 
+    color: var(--text-neutral-400);
+ 
+    font-size: 12px;
+ 
+    line-height: 1.5;
+  }
+`;
+ 

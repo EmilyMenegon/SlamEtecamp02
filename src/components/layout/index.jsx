@@ -1,0 +1,549 @@
+import {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+
+import { gsap } from "gsap";
+
+import ThemeToggle from "../themetoggle";
+import { cssVar, useTheme } from "../../theme/themeContext";
+
+import {
+  Header,
+  Navbar,
+  Logo,
+  NavCenter,
+  NavItem,
+  ProfileIcon,
+  ProfilePhoto,
+  MenuButton,
+  NavActions,
+} from "./style";
+
+import { FaUser } from "react-icons/fa";
+
+import {
+  getUsuarioLogado,
+  getAuthHeaders,
+} from "../../utils/auth";
+
+export default function Layout() {
+  const { theme } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [foto, setFoto] = useState(null);
+
+  const headerRef = useRef(null);
+  const navRef = useRef(null);
+  const indicatorRef = useRef(null);
+  const hoveredItemRef = useRef(null);
+
+  const links = [
+    {
+      label: "Início",
+      path: "/usuario/home",
+    },
+    {
+      label: "Inscrição",
+      path: "/usuario/inscricao",
+    },
+    {
+      label: "Eventos",
+      path: "/usuario/eventosusuario",
+    },
+    {
+      label: "Mural",
+      path: "/usuario/mural",
+    },
+    {
+      label: "Galeria",
+      path: "/usuario/galeria",
+    },
+    {
+      label: "Caderno",
+      path: "/usuario/notes",
+    },
+  ];
+
+  // =====================================================
+  // CARREGA FOTO DO USUÁRIO
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const usuarioLogado = getUsuarioLogado();
+
+    if (!usuarioLogado?.email) return;
+
+    fetch(
+      `http://localhost:3001/perfil/${usuarioLogado.email}`,
+      {
+        headers: getAuthHeaders(),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.foto) {
+          setFoto(data.foto);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // =====================================================
+  // PEGA ITEM ATIVO
+  // =====================================================
+
+  const getActiveItem = useCallback(() => {
+    return navRef.current?.querySelector(".active");
+  }, []);
+
+  // =====================================================
+  // MOVE INDICADOR
+  // =====================================================
+
+  const moveIndicator = useCallback(
+    (element, duration = 0.55) => {
+      if (
+        !element ||
+        !navRef.current ||
+        !indicatorRef.current
+      ) {
+        return;
+      }
+
+      const navRect =
+        navRef.current.getBoundingClientRect();
+
+      const itemRect =
+        element.getBoundingClientRect();
+
+      const x =
+        itemRect.left -
+        navRect.left;
+
+      const y =
+        itemRect.top -
+        navRect.top;
+
+      gsap.to(indicatorRef.current, {
+        x,
+        y,
+        width: itemRect.width,
+        height: itemRect.height,
+        opacity: 1,
+        duration,
+        ease: "power3.out",
+        overwrite: true,
+      });
+    },
+    []
+  );
+
+  // =====================================================
+  // RESET ITEM
+  // =====================================================
+
+  const resetItemColor = useCallback(
+    (item) => {
+      if (!item) return;
+
+      const isActive =
+        item.classList.contains("active");
+
+      gsap.to(item, {
+        color: isActive
+          ? cssVar("--nav-indicator-fg")
+          : cssVar("--nav-fg"),
+
+        scale: 1,
+
+        duration: 0.2,
+
+        ease: "power2.out",
+
+        overwrite: true,
+      });
+    },
+    []
+  );
+
+  // =====================================================
+  // HOVER
+  // =====================================================
+
+  const activateHover = useCallback(
+    (item) => {
+      if (
+        !item ||
+        window.innerWidth <= 700
+      ) {
+        return;
+      }
+
+      const previous =
+        hoveredItemRef.current;
+
+      if (
+        previous &&
+        previous !== item
+      ) {
+        resetItemColor(previous);
+      }
+
+      hoveredItemRef.current = item;
+
+      moveIndicator(item);
+
+      gsap.to(item, {
+        color: cssVar("--nav-indicator-fg"),
+
+        scale: 1.04,
+
+        duration: 0.2,
+
+        ease: "power2.out",
+
+        overwrite: true,
+      });
+    },
+    [
+      moveIndicator,
+      resetItemColor,
+    ]
+  );
+
+  // =====================================================
+  // RETORNA AO ITEM ATIVO
+  // =====================================================
+
+  const returnToActive = useCallback(() => {
+    if (window.innerWidth <= 700) {
+      return;
+    }
+
+    const hovered =
+      hoveredItemRef.current;
+
+    if (hovered) {
+      gsap.to(hovered, {
+        color: cssVar("--nav-fg"),
+
+        scale: 1,
+
+        duration: 0.2,
+
+        ease: "power2.out",
+
+        overwrite: true,
+      });
+    }
+
+    hoveredItemRef.current = null;
+
+    const active = getActiveItem();
+
+    if (active) {
+      moveIndicator(active);
+
+      gsap.to(active, {
+        color: cssVar("--nav-indicator-fg"),
+
+        scale: 1,
+
+        duration: 0.3,
+
+        ease: "power2.out",
+
+        overwrite: true,
+      });
+    }
+  }, [
+    getActiveItem,
+    moveIndicator,
+  ]);
+
+  // =====================================================
+  // ANIMAÇÃO INICIAL
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const active = getActiveItem();
+
+      if (
+        !active ||
+        !indicatorRef.current ||
+        !navRef.current
+      ) {
+        return;
+      }
+
+      const navRect =
+        navRef.current.getBoundingClientRect();
+
+      const itemRect =
+        active.getBoundingClientRect();
+
+      const x =
+        itemRect.left -
+        navRect.left;
+
+      const y =
+        itemRect.top -
+        navRect.top;
+
+      gsap.set(indicatorRef.current, {
+        x,
+        y,
+        width: itemRect.width,
+        height: itemRect.height,
+        opacity: 1,
+        scale: 0.85,
+      });
+
+      gsap.to(indicatorRef.current, {
+        scale: 1,
+
+        duration: 0.5,
+
+        ease: "back.out(1.7)",
+
+        overwrite: true,
+      });
+
+      gsap.set(active, {
+        color: cssVar("--nav-indicator-fg"),
+      });
+    }, headerRef);
+
+    return () => ctx.revert();
+  }, [getActiveItem]);
+
+
+  // =====================================================
+  // TEMA: GSAP grava cores inline, então ao trocar de
+  // tema as cores dos itens são reaplicadas.
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const items = navRef.current?.querySelectorAll(".nav-item");
+    if (!items) return;
+
+    items.forEach((item) => {
+      gsap.set(item, {
+        color: item.classList.contains("active")
+          ? cssVar("--nav-indicator-fg")
+          : cssVar("--nav-fg"),
+      });
+    });
+  }, [theme]);
+
+  // =====================================================
+  // RESPONSIVIDADE
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      if (!hoveredItemRef.current) {
+        const active = getActiveItem();
+
+        if (active) {
+          moveIndicator(active, 0);
+        }
+      }
+    };
+
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
+    };
+  }, [
+    getActiveItem,
+    moveIndicator,
+  ]);
+
+  // =====================================================
+  // MOUSE ENTER
+  // =====================================================
+
+  const handleMouseEnter = (event) => {
+    activateHover(
+      event.currentTarget
+    );
+  };
+
+  // =====================================================
+  // MOUSE LEAVE ITEM
+  // =====================================================
+
+  const handleMouseLeave = (event) => {
+    const item = event.currentTarget;
+
+    if (
+      hoveredItemRef.current === item
+    ) {
+      gsap.to(item, {
+        color: cssVar("--nav-fg"),
+
+        scale: 1,
+
+        duration: 0.2,
+
+        ease: "power2.out",
+
+        overwrite: true,
+      });
+
+      hoveredItemRef.current = null;
+
+      const active = getActiveItem();
+
+      if (active) {
+        moveIndicator(active);
+
+        gsap.to(active, {
+          color: cssVar("--nav-indicator-fg"),
+
+          scale: 1,
+
+          duration: 0.25,
+
+          ease: "power2.out",
+
+          overwrite: true,
+        });
+      }
+    }
+  };
+
+  // =====================================================
+  // MOUSE LEAVE NAVBAR
+  // =====================================================
+
+  const handleNavMouseLeave = () => {
+    returnToActive();
+  };
+
+  // =====================================================
+  // FECHA MENU MOBILE
+  // =====================================================
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  // =====================================================
+  // RENDER
+  // =====================================================
+
+  return (
+    <Header ref={headerRef}>
+
+      <Navbar>
+
+        {/* =================================================
+            LOGO - LADO ESQUERDO
+        ================================================= */}
+
+        <Logo
+          to="/usuario/home"
+          aria-label="Página inicial"
+        >
+          <img
+            src="/logo.png"
+            alt="Logo"
+          />
+        </Logo>
+
+        {/* =================================================
+            MENU
+        ================================================= */}
+
+        <NavCenter
+          ref={navRef}
+          $open={menuOpen}
+          onMouseLeave={handleNavMouseLeave}
+        >
+
+          <span ref={indicatorRef} />
+
+          {links.map((link) => (
+            <NavItem
+              key={link.path}
+              to={link.path}
+              className="nav-item"
+              onClick={closeMenu}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              {link.label}
+            </NavItem>
+          ))}
+
+          <ThemeToggle variant="menu" />
+
+        </NavCenter>
+
+        {/* =================================================
+            PERFIL - LADO DIREITO / ESQUERDO NO MOBILE
+        ================================================= */}
+
+        <NavActions>
+
+          <ThemeToggle variant="nav" />
+
+
+          <ProfileIcon
+            to="/usuario/profile"
+            $comFoto={!!foto}
+            aria-label="Meu perfil"
+          >
+            {foto ? (
+              <ProfilePhoto
+                src={foto}
+                alt="Foto de perfil"
+              />
+            ) : (
+              <FaUser />
+            )}
+          </ProfileIcon>
+
+        </NavActions>
+
+        {/* =================================================
+            BOTÃO MOBILE
+        ================================================= */}
+
+        <MenuButton
+          type="button"
+          onClick={() =>
+            setMenuOpen(
+              (prev) => !prev
+            )
+          }
+          aria-label={
+            menuOpen
+              ? "Fechar menu"
+              : "Abrir menu"
+          }
+          aria-expanded={menuOpen}
+          $open={menuOpen}
+        >
+          <span />
+          <span />
+          <span />
+        </MenuButton>
+
+      </Navbar>
+
+    </Header>
+  );
+}

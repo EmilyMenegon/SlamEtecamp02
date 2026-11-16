@@ -1,0 +1,394 @@
+/*
+  ==========================================================================
+  SLAM ETECAMP — TOKENS DE COR (tema claro e escuro)
+  ==========================================================================
+
+  Como funciona:
+  - Todas as cores que mudam entre os temas são variáveis CSS (custom properties).
+  - O tema ativo é definido pelo atributo data-theme no <html> ("light" | "dark"),
+    aplicado pelo ThemeProvider e, antes da primeira pintura, pelo script do index.html.
+  - Os valores do tema claro são exatamente as cores originais do projeto,
+    então o modo claro continua idêntico.
+  - Cores de marca (amarelo #ffdb53, vinho #831614 / #571111) usadas em botões,
+    selos e destaques NÃO mudam de tema e continuam escritas direto nos estilos.
+
+  Ao criar um componente novo, prefira os tokens semânticos (sem número):
+    fundo da página .......... var(--page-bg)
+    cartão / painel .......... var(--surface)
+    texto principal .......... var(--text-primary)
+    texto secundário ......... var(--text-secondary) / var(--text-muted)
+    título em vinho .......... var(--text-brand)
+    borda .................... var(--border) / var(--border-subtle)
+    botão escuro (#111) ...... var(--inverse-bg) + var(--inverse-fg)
+
+  Os tokens numerados (ex.: --text-neutral-550) preservam variações pontuais
+  da paleta original. O número indica a intensidade da cor no tema claro
+  (0 = branco, 1000 = preto).
+*/
+
+/* Cores de marca: iguais nos dois temas */
+:root {
+  --brand-yellow: #ffdb53;
+  --brand-yellow-strong: #f9be06;
+  --brand-red: #831614;
+  --brand-wine: #571111;
+  --on-brand-yellow: #111111;
+  --on-brand-red: #ffffff;
+}
+
+/* ---------- Tema claro (padrão) ---------- */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --illustration-filter: none;
+  --illustration-outline: drop-shadow(0 0 0 transparent);
+  --logo-filter: none;
+  --nav-bg: #ffdb53;
+  --nav-fg: #111111;
+  --nav-indicator-bg: #111111;
+  --nav-indicator-fg: #ffffff;
+  --nav-border: rgba(255, 255, 255, 0.5);
+  --nav-menu-border: transparent;
+  --nav-burger-bg: rgba(255, 255, 255, 0.35);
+  --focus-ring: rgba(0, 0, 0, 0.35);
+  --icon-on-tint: #831614;
+  --decor-dim: 1;
+  --glow-yellow-strong: rgba(255, 219, 83, 0.28);
+  --glow-yellow-soft: rgba(255, 219, 83, 0.08);
+
+  /* Fundos de página */
+  --page-bg: #ffffff;
+  --page-bg-cream: #fff7d0;
+  --page-bg-paper: #fffdf0;
+  --page-cream-100: #f9f2ce;
+  --page-cream-50: #fffaf0;
+  --page-neutral-0: #fafafa;
+  --page-neutral-100: #e8e8e8;
+  --page-neutral-50: #f8f8f8;
+  --page-neutral-50-2: #efefef;
+
+  /* Superfícies (cartões, painéis, campos) */
+  --surface: #ffffff;
+  --surface-cream: #fff7d0;
+  --surface-highlight: #fff5c9;
+  --surface-paper: #fffdf0;
+  --surface-cream-0: #fffef3;
+  --surface-cream-100: #fff3c4;
+  --surface-cream-100-2: #f2f0e4;
+  --surface-cream-100-3: #fff4c4;
+  --surface-cream-50: #fffaf0;
+  --surface-cream-50-2: #fffbe6;
+  --surface-cream-50-3: #fff8dc;
+  --surface-neutral-0: #fafafa;
+  --surface-neutral-0-a45: rgba(255, 255, 255, 0.45);
+  --surface-neutral-0-a48: rgba(255, 255, 255, 0.48);
+  --surface-neutral-0-a72: rgba(255, 255, 255, 0.72);
+  --surface-neutral-0-a75: rgba(255, 255, 255, 0.75);
+  --surface-neutral-0-a80: rgba(255, 255, 255, 0.8);
+  --surface-neutral-0-a92: rgba(255, 255, 255, 0.92);
+  --surface-neutral-100: #e5e5e5;
+  --surface-neutral-150: #dddddd;
+  --surface-neutral-50: #eeeeee;
+  --surface-neutral-50-2: #f1f1f1;
+  --surface-neutral-50-3: #f8f8f8;
+  --surface-neutral-50-4: #f5f5f5;
+  --surface-neutral-50-5: #f0f0f0;
+  --surface-neutral-50-6: #f0f0f1;
+  --surface-neutral-50-7: #f3f3f3;
+  --surface-neutral-50-8: #f7f7f7;
+  --surface-rose-50: #fff0f0;
+  --surface-success-50: #eefaf1;
+
+  /* Superfícies de contraste (botões/realces escuros) */
+  --inverse-bg: #111111;
+  --inverse-neutral-1000: #010000;
+  --inverse-neutral-1000-2: #000000;
+  --inverse-neutral-800: #383131;
+
+  /* Texto sobre superfícies de contraste */
+  --inverse-fg: #ffffff;
+
+  /* Textos e ícones */
+  --text-black: #000000;
+  --text-brand: #831614;
+  --text-ink: #010000;
+  --text-muted: #777777;
+  --text-primary: #111111;
+  --text-secondary: #333333;
+  --text-wine: #571111;
+  --text-brand-600: #a51d1d;
+  --text-brand-700-a40: rgba(131, 22, 20, 0.4);
+  --text-danger-500: #d62828;
+  --text-danger-550: #c62828;
+  --text-gold-350: #ffdb53;
+  --text-gold-400: #aaa183;
+  --text-gold-450: #a89768;
+  --text-gold-500: #f9be06;
+  --text-gold-500-2: #9d9064;
+  --text-gold-550: #e3b900;
+  --text-gold-550-2: #8f855c;
+  --text-gold-600: #d69e00;
+  --text-gold-650: #766c48;
+  --text-gold-650-2: #6f6545;
+  --text-gold-650-3: #7c7040;
+  --text-gold-700: #a27e00;
+  --text-gold-750: #735c00;
+  --text-gold-800: #5e4900;
+  --text-neutral-1000-a65: rgba(0, 0, 0, 0.65);
+  --text-neutral-350: #a89a9a;
+  --text-neutral-350-2: #aaaaaa;
+  --text-neutral-400: #999999;
+  --text-neutral-450: #888888;
+  --text-neutral-450-2: #8c8c8c;
+  --text-neutral-500: #948c75;
+  --text-neutral-500-2: #89816d;
+  --text-neutral-550: #88806a;
+  --text-neutral-550-2: #817d70;
+  --text-neutral-550-3: #6d6d6d;
+  --text-neutral-600: #666666;
+  --text-neutral-600-2: #776e58;
+  --text-neutral-650: #555555;
+  --text-neutral-750: #444444;
+  --text-neutral-800: #383131;
+  --text-neutral-850: #222222;
+  --text-neutral-850-2: #252525;
+  --text-neutral-850-3: #292929;
+  --text-neutral-900: #1c1c1c;
+  --text-neutral-900-2: #171717;
+  --text-neutral-950-a38: rgba(17, 17, 17, 0.38);
+  --text-success-600: #3a9d5d;
+  --text-success-650: #2e7d32;
+  --text-success-700: #1e7a3a;
+  --text-tone-850: #1a1a2e;
+
+  /* Bordas */
+  --border: #dddddd;
+  --border-subtle: #eeeeee;
+  --border-surface: #ffffff;
+  --border-cream-100: #fff7d0;
+  --border-cream-100-2: #f2ecd8;
+  --border-gold-150: #eee2c0;
+  --border-gold-150-2: #dedac9;
+  --border-gold-200: #e8dfaf;
+  --border-gold-350: #e5ce73;
+  --border-neutral-0-a28: rgba(255, 255, 255, 0.28);
+  --border-neutral-0-a50: rgba(255, 255, 255, 0.5);
+  --border-neutral-0-a65: rgba(255, 255, 255, 0.65);
+  --border-neutral-100: #e0e0e0;
+  --border-neutral-1000-a35: rgba(0, 0, 0, 0.35);
+  --border-neutral-1000-a6: rgba(0, 0, 0, 0.055);
+  --border-neutral-150: #d8d8d8;
+  --border-neutral-150-2: #d4d4d4;
+  --border-neutral-150-3: #d5d5d5;
+  --border-neutral-150-4: #dcdcdc;
+  --border-neutral-150-5: #d3d3d3;
+  --border-neutral-150-6: #dedede;
+  --border-neutral-150-7: #d8d8da;
+  --border-neutral-200: #d2d2d2;
+  --border-neutral-200-2: #cfcfcf;
+  --border-neutral-200-3: #d0d0d0;
+  --border-neutral-200-4: #cccccc;
+
+  /* Bordas fortes */
+  --border-strong-neutral-1000: #010000;
+  --border-strong-neutral-800: #383131;
+  --border-strong-neutral-950: #111111;
+
+  /* Anéis/contornos sólidos em sombras */
+  --ring-surface: #ffffff;
+
+  /* Sombras sólidas deslocadas */
+  --shadow-hard-neutral-1000: #010000;
+}
+
+/* ---------- Tema escuro ---------- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  /* contorno claro (efeito adesivo) para ilustrações em traço preto */
+  --illustration-filter: drop-shadow(8.5px 0 0 rgba(255,255,255,.92)) drop-shadow(-1.5px 0 0 rgba(255,255,255,.92)) drop-shadow(0 1.5px 0 rgba(255,255,255,.92)) drop-shadow(0 -1.5px 0 rgba(255,255,255,.92));
+  --illustration-outline: drop-shadow(1.5px 0 0 rgba(255,255,255,.92)) drop-shadow(-1.5px 0 0 rgba(255,255,255,.92)) drop-shadow(0 1.5px 0 rgba(255,255,255,.92)) drop-shadow(0 -1.5px 0 rgba(255,255,255,.92));
+  --logo-filter: drop-shadow(1px 0 0 #f5f5f5) drop-shadow(-1px 0 0 #f5f5f5) drop-shadow(0 1px 0 #f5f5f5) drop-shadow(0 -1px 0 #f5f5f5);
+  --nav-bg: #1c1c1e;
+  --nav-fg: #ececec;
+  --nav-indicator-bg: #ffdb53;
+  --nav-indicator-fg: #111111;
+  --nav-border: rgba(255, 219, 83, 0.22);
+  --nav-menu-border: rgba(255, 219, 83, 0.22);
+  --nav-burger-bg: rgba(255, 255, 255, 0.08);
+  --focus-ring: rgba(255, 219, 83, 0.6);
+  --icon-on-tint: #ffdb53;
+  /* decorações amarelas translúcidas ficam mais discretas no escuro */
+  --decor-dim: 0.3;
+  --glow-yellow-strong: rgba(255, 219, 83, 0.1);
+  --glow-yellow-soft: rgba(255, 219, 83, 0.03);
+
+  /* Fundos de página */
+  --page-bg: #121212;
+  --page-bg-cream: #22201a;
+  --page-bg-paper: #1b1b15;
+  --page-cream-100: #23221b;
+  --page-cream-50: #1b1915;
+  --page-neutral-0: #121212;
+  --page-neutral-100: #121212;
+  --page-neutral-50: #121212;
+  --page-neutral-50-2: #121212;
+
+  /* Superfícies (cartões, painéis, campos) */
+  --surface: #121212;
+  --surface-cream: #28261e;
+  --surface-highlight: #2a2614;
+  --surface-paper: #21201a;
+  --surface-cream-0: #212019;
+  --surface-cream-100: #2a2820;
+  --surface-cream-100-2: #26251d;
+  --surface-cream-100-3: #2a2820;
+  --surface-cream-50: #211f1a;
+  --surface-cream-50-2: #23221b;
+  --surface-cream-50-3: #25231d;
+  --surface-neutral-0: #212123;
+  --surface-neutral-0-a45: rgba(27, 27, 29, 0.45);
+  --surface-neutral-0-a48: rgba(27, 27, 29, 0.48);
+  --surface-neutral-0-a72: rgba(27, 27, 29, 0.72);
+  --surface-neutral-0-a75: rgba(27, 27, 29, 0.75);
+  --surface-neutral-0-a80: rgba(27, 27, 29, 0.8);
+  --surface-neutral-0-a92: rgba(27, 27, 29, 0.92);
+  --surface-neutral-100: #38383c;
+  --surface-neutral-150: #414145;
+  --surface-neutral-50: #2e2e31;
+  --surface-neutral-50-2: #2b2b2d;
+  --surface-neutral-50-3: #232325;
+  --surface-neutral-50-4: #262629;
+  --surface-neutral-50-5: #2c2c2f;
+  --surface-neutral-50-6: #2b2b2e;
+  --surface-neutral-50-7: #29292b;
+  --surface-neutral-50-8: #242426;
+  --surface-rose-50: #2c1b1b;
+  --surface-success-50: #1b2e20;
+
+  /* Superfícies de contraste (botões/realces escuros) */
+  --inverse-bg: #ececec;
+  --inverse-neutral-1000: #ececec;
+  --inverse-neutral-1000-2: #ececec;
+  --inverse-neutral-800: #ececec;
+
+  /* Texto sobre superfícies de contraste */
+  --inverse-fg: #121212;
+
+  /* Textos e ícones */
+  --text-black: #f5f5f5;
+  --text-brand: #e46d6d;
+  --text-ink: #faefef;
+  --text-muted: #ababab;
+  --text-primary: #eaeaea;
+  --text-secondary: #d5d5d5;
+  --text-wine: #e46d6d;
+  --text-brand-600: #e46d6d;
+  --text-brand-700-a40: rgba(235, 126, 124, 0.4);
+  --text-danger-500: #e46d6d;
+  --text-danger-550: #e26f6f;
+  --text-gold-350: #ffdb53;
+  --text-gold-400: #aaa183;
+  --text-gold-450: #a89768;
+  --text-gold-500: #f9be06;
+  --text-gold-500-2: #9d9064;
+  --text-gold-550: #d8c364;
+  --text-gold-550-2: #ada78f;
+  --text-gold-600: #d8ba64;
+  --text-gold-650: #b0a990;
+  --text-gold-650-2: #b4ad96;
+  --text-gold-650-3: #bfb383;
+  --text-gold-700: #dfc97d;
+  --text-gold-750: #e8daa3;
+  --text-gold-800: #ebddad;
+  --text-neutral-1000-a65: rgba(245, 245, 245, 0.65);
+  --text-neutral-350: #958d8d;
+  --text-neutral-350-2: #8b8b8b;
+  --text-neutral-400: #969696;
+  --text-neutral-450: #a0a0a0;
+  --text-neutral-450-2: #9e9e9e;
+  --text-neutral-500: #a8a59d;
+  --text-neutral-500-2: #adaba4;
+  --text-neutral-550: #afaca4;
+  --text-neutral-550-2: #adaca7;
+  --text-neutral-550-3: #b1b1b1;
+  --text-neutral-600: #b6b6b6;
+  --text-neutral-600-2: #bab7af;
+  --text-neutral-650: #c0c0c0;
+  --text-neutral-750: #cbcbcb;
+  --text-neutral-800: #d6d3d3;
+  --text-neutral-850: #e0e0e0;
+  --text-neutral-850-2: #dedede;
+  --text-neutral-850-3: #dbdbdb;
+  --text-neutral-900: #e3e3e3;
+  --text-neutral-900-2: #e7e7e7;
+  --text-neutral-950-a38: rgba(234, 234, 234, 0.38);
+  --text-success-600: #6ac88b;
+  --text-success-650: #82d186;
+  --text-success-700: #89dda3;
+  --text-tone-850: #c2c2d6;
+
+  /* Bordas */
+  --border: #3a3a3d;
+  --border-subtle: #313134;
+  --border-surface: #28282a;
+  --border-cream-100: #554e2e;
+  --border-cream-100-2: #564d2f;
+  --border-gold-150: #5e5232;
+  --border-gold-150-2: #605733;
+  --border-gold-200: #645c36;
+  --border-gold-350: #74693f;
+  --border-neutral-0-a28: rgba(255, 255, 255, 0.05);
+  --border-neutral-0-a50: rgba(255, 255, 255, 0.09);
+  --border-neutral-0-a65: rgba(255, 255, 255, 0.117);
+  --border-neutral-100: #38383c;
+  --border-neutral-1000-a35: rgba(255, 255, 255, 0.16);
+  --border-neutral-1000-a6: rgba(255, 255, 255, 0.028);
+  --border-neutral-150: #3c3c40;
+  --border-neutral-150-2: #3f3f42;
+  --border-neutral-150-3: #3e3e42;
+  --border-neutral-150-4: #3a3a3e;
+  --border-neutral-150-5: #3f3f43;
+  --border-neutral-150-6: #39393d;
+  --border-neutral-150-7: #3c3c40;
+  --border-neutral-200: #404044;
+  --border-neutral-200-2: #414145;
+  --border-neutral-200-3: #414145;
+  --border-neutral-200-4: #434347;
+
+  /* Bordas fortes */
+  --border-strong-neutral-1000: #3a3a3c;
+  --border-strong-neutral-800: #3a3a3c;
+  --border-strong-neutral-950: #3a3a3c;
+
+  /* Anéis/contornos sólidos em sombras */
+  --ring-surface: #1c1c1e;
+
+  /* Sombras sólidas deslocadas */
+  --shadow-hard-neutral-1000: #000000;
+}
+
+/* Transição suave só durante a troca de tema (evita animar a página inteira o tempo todo) */
+:root.theme-switching,
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, fill 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root.theme-switching,
+  :root.theme-switching * {
+    transition: none !important;
+  }
+}
+
+/* Transição circular (View Transitions API) a partir do botão de tema */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+/* Fundo base do documento: evita "flash" branco no tema escuro */
+html {
+  background-color: var(--page-bg);
+}

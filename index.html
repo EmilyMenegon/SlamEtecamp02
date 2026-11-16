@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/logo.png"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffdb53" />
+
+    <!--
+      Aplica o tema (claro/escuro) antes da primeira pintura,
+      evitando o "flash" branco. A lógica completa fica em src/theme/ThemeProvider.jsx.
+    -->
+    <script>
+      (function () {
+        try {
+          var salvo = localStorage.getItem("slam-theme");
+          var escuro = salvo ? salvo === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var tema = escuro ? "dark" : "light";
+          document.documentElement.setAttribute("data-theme", tema);
+          if (escuro) document.querySelector('meta[name="theme-color"]').setAttribute("content", "#121212");
+        } catch (e) {}
+      })();
+    </script>
+
+    <title>Slam Etecamp</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script
+      type="module"
+      src="/src/main.jsx"
+    ></script>
+  </body>
+</html>

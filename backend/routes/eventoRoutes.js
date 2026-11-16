@@ -1,0 +1,28 @@
+import { Router } from "express";
+import {
+  listarEventos,
+  criarEvento,
+  atualizarEvento,
+  excluirEvento,
+  listarParticipantes,
+  definirParticipantes,
+} from "../controllers/eventoController.js";
+import { exigirLogin, exigirTipo } from "../middlewares/auth.js";
+
+const router = Router();
+
+router.get("/eventos", listarEventos);
+router.post("/eventos", exigirLogin, exigirTipo(["organizador"]), criarEvento);
+router.put("/eventos/:id", exigirLogin, exigirTipo(["organizador"]), atualizarEvento);
+router.delete("/eventos/:id", exigirLogin, exigirTipo(["organizador"]), excluirEvento);
+
+// Lista de poetas do evento: não precisa ser vista por qualquer aluno logado.
+router.get(
+  "/eventos/:id/participantes",
+  exigirLogin,
+  exigirTipo(["organizador", "matematico"]),
+  listarParticipantes
+);
+router.put("/eventos/:id/participantes", exigirLogin, exigirTipo(["organizador"]), definirParticipantes);
+
+export default router;
