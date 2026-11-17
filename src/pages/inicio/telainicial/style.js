@@ -1,5 +1,71 @@
 import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 
+/* =========================================================
+   ANIMAÇÃO PADRÃO DOS BOTÕES
+   Igual à dos botões da tela de login (Entrar, Home):
+   - borda de 2px que fica vinho no hover
+   - botão sobe 8px com sombra (5px no celular)
+   - bolinha amarela cresce a partir do mouse
+   - foco por teclado com contorno amarelo
+========================================================= */
+
+const botaoBase = css`
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease,
+    box-shadow 0.3s ease,
+    color 0.25s ease,
+    background 0.25s ease;
+`;
+
+/* bordaHover: cor da borda no hover. Quando a bolinha for vinho, usar preto para a borda aparecer. */
+const botaoAnimado = (tamanho = 40, escala = 18, bordaHover = "#831614") => css`
+  &::before {
+    content: "";
+    position: absolute;
+    left: var(--mouse-x, 50%);
+    top: var(--mouse-y, 50%);
+    width: ${tamanho}px;
+    height: ${tamanho}px;
+    border-radius: 50%;
+    background: #ffdb53;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: ${bordaHover};
+    box-shadow: 0 18px 35px rgba(131, 22, 20, 0.16);
+  }
+
+  &:hover::before {
+    transform: translate(-50%, -50%) scale(${escala});
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  &:active {
+    transform: translateY(-3px) scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #ffdb53;
+    outline-offset: 4px;
+  }
+`;
+
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: "Lost in South";
@@ -249,32 +315,20 @@ export const Buttons = styled.div`
 `;
 
 export const PrimaryButton = styled.button`
-  position: relative;
+  ${botaoBase}
   min-height: clamp(56px, 9vh, 76px);
   padding: clamp(14px, 2.5vh, 22px) 42px;
-  border: none;
+  border: 2px solid #ffdb53;
   border-radius: 14px;
   background: #ffdb53;
   color: #000;
   font-size: 1.15rem;
   font-weight: 700;
-  cursor: pointer;
-  overflow: hidden;
-  isolation: isolate;
-  transition: 0.3s ease;
+
+  ${botaoAnimado(40, 18, "#ffdb53")}
 
   &::before {
-    content: "";
-    position: absolute;
-    left: var(--mouse-x, 50%);
-    top: var(--mouse-y, 50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
     background: #831614;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.65s ease;
-    z-index: 0;
   }
 
   .button-content {
@@ -287,11 +341,6 @@ export const PrimaryButton = styled.button`
 
   &:hover {
     color: #fff;
-    transform: translateY(-3px);
-  }
-
-  &:hover::before {
-    transform: translate(-50%, -50%) scale(18);
   }
 
   svg {
@@ -1000,42 +1049,26 @@ export const LightboxImage = styled.img`
   animation: ${lightboxZoom} 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 `;
 
-/* mesma animação do PrimaryButton: círculo de tinta nasce na posição do mouse */
-const inkButton = css`
-  position: relative;
+/* botões redondos do lightbox: amarelos, bolinha vinho, borda vinho no hover */
+const lightboxButton = css`
+  ${botaoBase}
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
+  border: 2px solid #ffdb53;
   border-radius: 50%;
   background: #ffdb53;
   color: #111;
-  cursor: pointer;
-  overflow: hidden;
-  isolation: isolate;
   z-index: 3;
-  transition: 0.3s ease;
+
+  ${botaoAnimado(20, 8, "#111111")}
 
   &::before {
-    content: "";
-    position: absolute;
-    left: var(--mouse-x, 50%);
-    top: var(--mouse-y, 50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
     background: #831614;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.65s ease;
-    z-index: 0;
   }
 
   &:hover {
     color: #fff;
-  }
-
-  &:hover::before {
-    transform: translate(-50%, -50%) scale(18);
   }
 
   svg {
@@ -1046,17 +1079,13 @@ const inkButton = css`
 `;
 
 export const LightboxClose = styled.button`
-  ${inkButton}
+  ${lightboxButton}
   position: absolute;
   top: 20px;
   right: 24px;
   width: 56px;
   height: 56px;
   font-size: 1.3rem;
-
-  &:hover {
-    transform: translateY(-3px);
-  }
 
   &:hover svg {
     transform: rotate(90deg);
@@ -1070,25 +1099,22 @@ export const LightboxClose = styled.button`
   }
 `;
 
+/* top com calc em vez de translateY(-50%), para não brigar com o movimento de subir */
 export const LightboxNav = styled.button`
-  ${inkButton}
+  ${lightboxButton}
   position: absolute;
-  top: 50%;
+  top: calc(50% - 28px);
   ${({ $side }) => ($side === "left" ? "left: 20px;" : "right: 20px;")}
   width: 56px;
   height: 56px;
   font-size: 1.3rem;
-  transform: translateY(-50%);
-
-  &:hover {
-    transform: translateY(calc(-50% - 3px));
-  }
 
   &:hover svg {
     transform: translateX(${({ $side }) => ($side === "left" ? "-6px" : "6px")});
   }
 
   @media (max-width: 768px) {
+    top: calc(50% - 23px);
     width: 46px;
     height: 46px;
     ${({ $side }) => ($side === "left" ? "left: 8px;" : "right: 8px;")}
@@ -1161,35 +1187,25 @@ export const CTASubtitle = styled.p`
 `;
 
 export const CTALink = styled.a`
-  position: relative;
+  ${botaoBase}
   width: min(310px, 100%);
   min-height: 64px;
   padding: 18px 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid #111111;
   border-radius: 12px;
   background: #111111;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
-  overflow: hidden;
-  isolation: isolate;
-  transition: 0.3s ease;
+
+  ${botaoAnimado(40, 18, "#111111")}
 
   &::before {
-    content: "";
-    position: absolute;
-    left: var(--mouse-x, 50%);
-    top: var(--mouse-y, 50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
     background: #831614;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.65s ease;
-    z-index: 0;
   }
 
   .button-content {
@@ -1202,11 +1218,6 @@ export const CTALink = styled.a`
 
   &:hover {
     color: #ffdb53;
-    transform: translateY(-3px);
-  }
-
-  &:hover::before {
-    transform: translate(-50%, -50%) scale(18);
   }
 
   &:hover svg {

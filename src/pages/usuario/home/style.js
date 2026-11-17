@@ -1,95 +1,113 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 /* vinho escuro da paleta (primaryDark), usado no lugar do #831614 */
 const WINE = "#571111";
+
+/* ============================================================
+   ANIMAÇÃO PADRÃO DOS BOTÕES
+   Igual à dos botões da tela de login:
+   - borda de 2px que muda de cor no hover
+   - botão sobe 8px com sombra (5px no celular)
+   - bolinha cresce a partir do mouse
+   - foco por teclado com contorno amarelo
+
+   bordaHover: a borda no hover precisa contrastar com a cor da
+   bolinha (bolinha escura -> borda preta, bolinha amarela -> borda vinho).F
+============================================================ */
+
+const botaoBase = css`
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease,
+    box-shadow 0.3s ease,
+    color 0.25s ease,
+    background 0.25s ease;
+`;
+
+const botaoAnimado = (tamanho = 40, escala = 18, bordaHover = "#111111") => css`
+  &::before {
+    content: "";
+    position: absolute;
+    left: var(--mouse-x, 50%);
+    top: var(--mouse-y, 50%);
+    width: ${tamanho}px;
+    height: ${tamanho}px;
+    border-radius: 50%;
+    background: #ffdb53;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: ${bordaHover};
+    box-shadow: 0 18px 35px rgba(131, 22, 20, 0.16);
+  }
+
+  &:hover::before {
+    transform: translate(-50%, -50%) scale(${escala});
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  &:active {
+    transform: translateY(-3px) scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #ffdb53;
+    outline-offset: 4px;
+  }
+`;
 
 /* ============================================================
    ANIMAÇÕES
 ============================================================ */
 
 const fadeUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
 const floating = keyframes`
-  0% {
-    transform: translate(0, 0);
-  }
-
-  50% {
-    transform: translate(12px, -18px);
-  }
-
-  100% {
-    transform: translate(0, 0);
-  }
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(12px, -18px); }
+  100% { transform: translate(0, 0); }
 `;
 
 const pulse = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: .9;
-  }
-
-  50% {
-    transform: scale(1.12);
-    opacity: .6;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: .9;
-  }
+  0% { transform: scale(1); opacity: .9; }
+  50% { transform: scale(1.12); opacity: .6; }
+  100% { transform: scale(1); opacity: .9; }
 `;
 
 const pixelOneFloat = keyframes`
-  0% {
-    transform: translate(0, 0) rotate(-4deg);
-  }
-
-  50% {
-    transform: translate(-8px, -14px) rotate(4deg);
-  }
-
-  100% {
-    transform: translate(0, 0) rotate(-4deg);
-  }
+  0% { transform: translate(0, 0) rotate(-4deg); }
+  50% { transform: translate(-8px, -14px) rotate(4deg); }
+  100% { transform: translate(0, 0) rotate(-4deg); }
 `;
 
 const pixelTwoFloat = keyframes`
-  0% {
-    transform: translate(0, 0) rotate(3deg);
-  }
-
-  50% {
-    transform: translate(10px, -12px) rotate(-5deg);
-  }
-
-  100% {
-    transform: translate(0, 0) rotate(3deg);
-  }
+  0% { transform: translate(0, 0) rotate(3deg); }
+  50% { transform: translate(10px, -12px) rotate(-5deg); }
+  100% { transform: translate(0, 0) rotate(3deg); }
 `;
 
 const pixelThreeFloat = keyframes`
-  0% {
-    transform: translate(0, 0) rotate(-3deg);
-  }
-
-  50% {
-    transform: translate(9px, 13px) rotate(5deg);
-  }
-
-  100% {
-    transform: translate(0, 0) rotate(-3deg);
-  }
+  0% { transform: translate(0, 0) rotate(-3deg); }
+  50% { transform: translate(9px, 13px) rotate(5deg); }
+  100% { transform: translate(0, 0) rotate(-3deg); }
 `;
 
 /* ============================================================
@@ -289,8 +307,9 @@ export const Actions = styled.div`
   }
 `;
 
+/* amarelo, bolinha vinho: a borda fica preta quando o botão enche de vinho */
 export const PrimaryLink = styled.button`
-  position: relative;
+  ${botaoBase}
   min-height: 70px;
   padding: 20px 25px;
   display: flex;
@@ -298,34 +317,18 @@ export const PrimaryLink = styled.button`
   justify-content: center;
   gap: 14px;
   width: auto;
-  border: none;
+  border: 2px solid #ffdb53;
   border-radius: 12px;
   background: #ffdb53;
   color: #000;
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
   font-weight: 800;
-  cursor: pointer;
-  overflow: hidden;
-  isolation: isolate;
-  transform: translateZ(0);
-  transition:
-    color .3s ease,
-    transform .25s ease;
+
+  ${botaoAnimado(40, 18, "#ffdb53")}
 
   &::before {
-    content: "";
-    position: absolute;
-    left: var(--mouse-x, 50%);
-    top: var(--mouse-y, 50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
     background: ${WINE};
-    transform: translate(-50%, -50%) scale(0);
-    pointer-events: none;
-    z-index: 0;
-    transition: transform .65s cubic-bezier(.16, 1, .3, 1);
   }
 
   span {
@@ -341,11 +344,6 @@ export const PrimaryLink = styled.button`
 
   &:hover {
     color: #fff;
-    transform: translateY(-3px);
-  }
-
-  &:hover::before {
-    transform: translate(-50%, -50%) scale(18);
   }
 
   svg {
@@ -355,10 +353,6 @@ export const PrimaryLink = styled.button`
 
   &:hover svg {
     transform: translateX(6px);
-  }
-
-  &:active {
-    transform: translateY(0) scale(.98);
   }
 
   @media (max-width: 600px) {
@@ -469,26 +463,10 @@ export const PixelOne = styled.img`
   animation: ${pixelOneFloat} 4.5s ease-in-out infinite;
   will-change: transform;
 
-  @media (max-width: 1100px) {
-    width: 65px;
-    left: -8%;
-  }
-
-  @media (max-width: 900px) {
-    width: 58px;
-    left: -8%;
-  }
-
-  @media (max-width: 768px) {
-    width: 52px;
-    top: 22%;
-    left: -6%;
-  }
-
-  @media (max-width: 500px) {
-    width: 44px;
-    left: -3%;
-  }
+  @media (max-width: 1100px) { width: 65px; left: -8%; }
+  @media (max-width: 900px) { width: 58px; left: -8%; }
+  @media (max-width: 768px) { width: 52px; top: 22%; left: -6%; }
+  @media (max-width: 500px) { width: 44px; left: -3%; }
 `;
 
 export const PixelTwo = styled.img`
@@ -507,26 +485,10 @@ export const PixelTwo = styled.img`
   animation-delay: .7s;
   will-change: transform;
 
-  @media (max-width: 1100px) {
-    width: 60px;
-    right: -5%;
-  }
-
-  @media (max-width: 900px) {
-    width: 53px;
-    right: -6%;
-  }
-
-  @media (max-width: 768px) {
-    width: 48px;
-    top: 5%;
-    right: -4%;
-  }
-
-  @media (max-width: 500px) {
-    width: 40px;
-    right: -2%;
-  }
+  @media (max-width: 1100px) { width: 60px; right: -5%; }
+  @media (max-width: 900px) { width: 53px; right: -6%; }
+  @media (max-width: 768px) { width: 48px; top: 5%; right: -4%; }
+  @media (max-width: 500px) { width: 40px; right: -2%; }
 `;
 
 export const PixelThree = styled.img`
@@ -545,26 +507,10 @@ export const PixelThree = styled.img`
   animation-delay: 1.2s;
   will-change: transform;
 
-  @media (max-width: 1100px) {
-    width: 68px;
-    right: -7%;
-  }
-
-  @media (max-width: 900px) {
-    width: 60px;
-    right: -7%;
-  }
-
-  @media (max-width: 768px) {
-    width: 55px;
-    bottom: 7%;
-    right: -5%;
-  }
-
-  @media (max-width: 500px) {
-    width: 46px;
-    right: -3%;
-  }
+  @media (max-width: 1100px) { width: 68px; right: -7%; }
+  @media (max-width: 900px) { width: 60px; right: -7%; }
+  @media (max-width: 768px) { width: 55px; bottom: 7%; right: -5%; }
+  @media (max-width: 500px) { width: 46px; right: -3%; }
 `;
 
 /* ============================================================
